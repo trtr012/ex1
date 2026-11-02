@@ -46,13 +46,7 @@ public class Main
 				/************************/
 				/* [6] Print to console */
 				/************************/
-				if(s.sym == 35)//err
-				{
-					fileWriter.close();//close any change and reopen should overwrite old data
-					fileWriter = new PrintWriter(outputFileName);
-					fileWriter.print("ERROR");
-					break;
-				}
+				
 				
 				System.out.print(names[s.sym]);
 				if(s.value != null)
@@ -72,7 +66,13 @@ public class Main
 				/*********************/
 				/* [7] Print to file */
 				/*********************/
-				
+				if(s.sym == 35)//err
+				{
+					fileWriter.close();//close any change and reopen should overwrite old data
+					fileWriter = new PrintWriter(outputFileName);
+					fileWriter.print("ERROR");
+					break;
+				}
 				
 				fileWriter.print(names[s.sym]);
 				if(s.value != null)
@@ -93,7 +93,7 @@ public class Main
 				/* [8] Read next token */
 				/***********************/
 				s = l.next_token();
-				if(s.sym != TokenNames.EOF)
+				if(s.sym != TokenNames.EOF)//dont \n the last line
 					fileWriter.print("\n");
 			}
 			
