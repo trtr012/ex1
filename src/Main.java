@@ -13,7 +13,9 @@ public class Main
 		PrintWriter fileWriter;
 		String inputFileName = argv[0];
 		String outputFileName = argv[1];
-		
+		String[] names = {"","PLUS","MINUS","TIMES","DIVIDE","EQ","LT","GT","AND","OR","LPAREN","RPAREN","LBRACK","RBRACK",
+		                  "LBRACE","RBRACE","COMMA","DOT","SEMICOLON","ASSIGN","ARRAY","CLASS","EXTENDS",
+		                  "NEW","NIL","IF","ELSE","WHILE","RETURN","TYPE_INT","TYPE_STRING","TYPE_VOID","ID","INT","STRING"};
 		try
 		{
 			/********************************/
@@ -44,42 +46,71 @@ public class Main
 				/************************/
 				/* [6] Print to console */
 				/************************/
+				System.out.print(names[s.sym]);
+				if(s.value != null)
+				{
+					System.out.print("(");
+					System.out.print(s.value);
+					System.out.print(")");
+				}
 				System.out.print("[");
 				System.out.print(l.getLine());
 				System.out.print(",");
 				System.out.print(l.getTokenStartPosition());
-				System.out.print("]:");
-				System.out.print(s.value);
+				System.out.print("]");
+				
 				System.out.print("\n");
 				
 				/*********************/
 				/* [7] Print to file */
 				/*********************/
+				fileWriter.print(names[s.sym]);
+				if(s.value != null)
+				{
+					fileWriter.print("(");
+					fileWriter.print(s.value);
+					fileWriter.print(")");
+				}
+				fileWriter.print("[");
 				fileWriter.print(l.getLine());
-				fileWriter.print(": ");
-				fileWriter.print(s.value);
-				fileWriter.print("\n");
+				fileWriter.print(",");
+				fileWriter.print(l.getTokenStartPosition());
+				fileWriter.print("]");
+				
+				
 				
 				/***********************/
 				/* [8] Read next token */
 				/***********************/
 				s = l.next_token();
+				if(s.sym != TokenNames.EOF)
+					fileWriter.print("\n");
 			}
 			
 			/******************************/
 			/* [9] Close lexer input file */
 			/******************************/
 			l.yyclose();
-
+			fileReader.close();
+			
 			/**************************/
 			/* [10] Close output file */
 			/**************************/
 			fileWriter.close();
     	}
-			     
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			try
+			{	
+				
+				fileWriter = new PrintWriter(outputFileName);
+				fileWriter.print("ERROR");
+				fileWriter.close();
+			}
+			catch(Exception er)
+			{
+				System.out.print("cant open file to write error\n");
+			}
 		}
 	}
 }
