@@ -103,8 +103,8 @@ ANY 			= [^]
 
 "+"					{ return symbol(TokenNames.PLUS);}
 "-"					{ return symbol(TokenNames.MINUS);}
-"*"				{ return symbol(TokenNames.TIMES);}
-"/"				{ return symbol(TokenNames.DIVIDE);}
+"*"					{ return symbol(TokenNames.TIMES);}
+"/"					{ return symbol(TokenNames.DIVIDE);}
 "="					{ return symbol(TokenNames.EQ);}
 "<"					{ return symbol(TokenNames.LT);}
 ">"					{ return symbol(TokenNames.GT);}
@@ -138,33 +138,32 @@ ANY 			= [^]
 
 {INTEGER}			{ 
 					if (Integer.valueOf(yytext()) > 32767)
-						throw new Error();
+						return symbol(TokenNames.ERR);
 					return symbol(TokenNames.INT, Integer.valueOf(yytext()));
 					} 
 					
-{LEADING_0}         { throw new Error(); }
+{LEADING_0}         { return symbol(TokenNames.ERR); }
 {ID}				{ return symbol(TokenNames.ID, yytext());}
 {STRING}            { return symbol(TokenNames.STRING, yytext());}
 {WhiteSpace}		{ /* just skip what was found, do nothing */ }
 
 <<EOF>>				{ return symbol(TokenNames.EOF);}
-{ANY}               { throw new Error(); }
+{ANY}               { return symbol(TokenNames.ERR); }
 }
 
 <TYPE_1> {
 {LineTerminator}    { yybegin(YYINITIAL); }
 {FIGURE_2}			{ }
 
-
-<<EOF>> 			{ throw new Error(); }
-{ANY}               { throw new Error(); }
+<<EOF>> 			{ return symbol(TokenNames.ERR); }
+{ANY}               { return symbol(TokenNames.ERR); }
 }
 
 <TYPE_2> {
 {FIGURE_2}			{ }
 "*/"                { yybegin(YYINITIAL); }
 
-<<EOF>> 			{ throw new Error(); }
-{ANY}               { throw new Error(); }
+<<EOF>> 			{ return symbol(TokenNames.ERR); }
+{ANY}               { return symbol(TokenNames.ERR); }
 }
 

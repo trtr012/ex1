@@ -46,6 +46,14 @@ public class Main
 				/************************/
 				/* [6] Print to console */
 				/************************/
+				if(s.sym == 35)//err
+				{
+					fileWriter.close();//close any change and reopen should overwrite old data
+					fileWriter = new PrintWriter(outputFileName);
+					fileWriter.print("ERROR");
+					break;
+				}
+				
 				System.out.print(names[s.sym]);
 				if(s.value != null)
 				{
@@ -64,6 +72,8 @@ public class Main
 				/*********************/
 				/* [7] Print to file */
 				/*********************/
+				
+				
 				fileWriter.print(names[s.sym]);
 				if(s.value != null)
 				{
@@ -100,17 +110,7 @@ public class Main
     	}
 		catch (Exception e)
 		{
-			try
-			{	
-				
-				fileWriter = new PrintWriter(outputFileName);
-				fileWriter.print("ERROR");
-				fileWriter.close();
-			}
-			catch(Exception er)
-			{
-				System.out.print("cant open file to write error\n");
-			}
+			e.printStackTrace();
 		}
 	}
 }
